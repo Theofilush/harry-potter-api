@@ -28,7 +28,7 @@ type Character = {
 
 type Characters = Character[];
 
-export const dataCharacters: Characters = [
+export let dataCharacters: Characters = [
   {
     id: "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8",
     name: "Harry Potter",

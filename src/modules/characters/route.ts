@@ -22,13 +22,18 @@ characterRoute.get("/:slug", (c) => {
 characterRoute.delete("/:slug", (c) => {
   const slug = c.req.param("slug");
 
-  const foundCharacter = dataCharacters.findIndex((item) => item.slug === slug);
+  const originalLength = dataCharacters.length;
 
-  if (foundCharacter === -1) {
+  const newItems = dataCharacters.filter((item) => item.slug !== slug);
+  dataCharacters.length = 0;
+  dataCharacters.push(...newItems);
+
+  if (dataCharacters.length === originalLength) {
     return c.notFound();
   }
 
-  const deleted = dataCharacters.splice(foundCharacter, 1)[0];
-
-  return c.json({ responseCode: "success", responseMessage: "Deleted success" });
+  return c.json({
+    responseCode: "Success",
+    responseMessage: "Deleted success",
+  });
 });
