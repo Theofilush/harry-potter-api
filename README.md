@@ -6,44 +6,50 @@ API bertema **Harry Potter** dengan fitur **CRUD** dan **Search** untuk tiga ent
 - **Spells** (mantra)
 - **Houses** (asrama)
 
-Didesain sederhana, cepat dijalankan secara lokal dengan **Bun + TypeScript**.
+Didesain ringan dan cepat dijalankan secara lokal menggunakan **Bun + TypeScript**.
 
 <p align="center">
-  https://bun.shhttps://img.shields.io/badge/Built%20with-Bun-000000?logo=bun&logoColor=fff</a>
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-%23007oColor=white
+  <a href="https://bun.sh/">https://img.shields.io/badge/Built%20with-Bun-000000?logo=bun&logoColor=fff</a>
+  https://img.shields.io/badge/TypeScript-%23007ACC.svg?logo=typescript&logoColor=white
   https://img.shields.io/badge/API-CRUD%20%2B%20Search-success
 </p>
 
 ---
 
-## ✨ Fitur
+## Daftar Isi
 
-- **CRUD lengkap** untuk `characters`, `spells`, `houses`
-- **Search & filter** dengan query `q` dan parameter spesifik per entitas
-- **Pagination & sorting**: `page`, `limit`, `sortBy`, `order`
-- Respons konsisten: `data`, `meta`, `error`
-- Struktur folder modular (controller/router/service) *(sesuaikan dengan implementasi di `src/`)*
-
-> Cara menjalankan lokal mengikuti instruksi di halaman repo: `bun install` → `bun run dev` → buka `http://localhost:3000`. [1](https://github.com/Theofilush/harry-potter-api)
+- Fitur
+- Prasyarat
+- Menjalankan Secara Lokal
+- Konfigurasi Lingkungan
+- Model Data
+- Endpoints
+  - Characters
+  - Spells
+  - Houses
+- Query Parameters Umum
+- Contoh Request
+- Respons Standar & Error
+- Struktur Proyek
+- Scripts
+- Testing
+- Dokumentasi Otomatis (OpenAPI/Swagger)
+- Deployment
+- Kontribusi
+- Lisensi
 
 ---
 
-## 📦 Prasyarat
+## Fitur
 
-- Bun terpasang di mesin Anda
-- Node API-compatible (Bun menjalankan skrip dan dependency)  
-- **TypeScript** untuk tipe yang lebih aman
+- **CRUD lengkap** untuk `characters`, `spells`, `houses`.
+- **Search & filter**: teks bebas (`q`) + parameter spesifik per entitas.
+- **Pagination & sorting**: `page`, `limit`, `sortBy`, `order`.
+- Respons konsisten: `data`, `meta`, `error`.
+- Kode modular & mudah di‑extend (controller/router/service).
 
 ---
 
-## 🚀 Menjalankan Secara Lokal
+## Prasyarat
 
-```bash
-# 1) Instal dependency
-bun install
-
-# 2) Jalankan development server
-bun run dev
-
-# 3) Akses API
-# (default) http://localhost:3000
+- **Bun** terpasang di mesin Anda (lihat panduan instalasi resmi).  
