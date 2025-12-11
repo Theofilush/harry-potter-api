@@ -1,39 +1,40 @@
 import { Hono } from "hono";
 import { dataCharacters } from "./data";
 
+let characters = dataCharacters;
+
 export const characterRoute = new Hono();
 
 characterRoute.get("/", (c) => {
-  return c.json(dataCharacters);
+  return c.json(characters);
 });
 
 characterRoute.get("/:slug", (c) => {
   const slug = c.req.param("slug");
 
-  const foundCharacter = dataCharacters.find((character) => character.slug === slug);
+  const character = characters.find((character) => character.slug === slug);
 
-  if (!foundCharacter) {
+  if (!character) {
     return c.notFound();
   }
 
-  return c.json(foundCharacter);
+  return c.json(character);
 });
 
-characterRoute.delete("/:slug", (c) => {
-  const slug = c.req.param("slug");
+characterRoute.delete("/:id", (c) => {
+  const id = c.req.param("id");
 
-  const originalLength = dataCharacters.length;
+  const updatedCharacters = characters.filter(
+    (character) => character.id !== id
+  );
 
-  const updatedCharaters = dataCharacters.filter((char) => char.slug !== slug);
-  dataCharacters.length = 0;
-  dataCharacters.push(...updatedCharaters);
-
-  if (dataCharacters.length === originalLength) {
+  if (characters.length === updatedCharacters.length) {
     return c.notFound();
   }
 
+  characters = updatedCharacters;
+
   return c.json({
-    responseCode: "Success",
-    responseMessage: "Deleted success",
+    message: `Character ${id} deleted`,
   });
 });

@@ -2,11 +2,11 @@ type Character = {
   id: string;
   name: string;
   slug: string;
-  alternate_names: string[];
+  alternateNames: string[];
   species: string;
   gender: string;
   house: string | null;
-  dateOfBirth: string | null;
+  dateOfBirth: Date | null;
   yearOfBirth: number | null;
   wizard: boolean;
   ancestry: string | null;
@@ -21,9 +21,11 @@ type Character = {
   hogwartsStudent: boolean;
   hogwartsStaff: boolean;
   actor: string;
-  alternate_actors: string[];
+  alternateActors: string[];
   alive: boolean;
   image: string;
+  // createdAt
+  // updatedAt
 };
 
 type Characters = Character[];
@@ -33,11 +35,16 @@ export let dataCharacters: Characters = [
     id: "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8",
     name: "Harry Potter",
     slug: "harry-potter",
-    alternate_names: ["The Boy Who Lived", "The Chosen One", "Undesirable No. 1", "Potty"],
+    alternateNames: [
+      "The Boy Who Lived",
+      "The Chosen One",
+      "Undesirable No. 1",
+      "Potty",
+    ],
     species: "human",
     gender: "male",
     house: "Gryffindor",
-    dateOfBirth: "31-07-1980",
+    dateOfBirth: new Date("31-07-1980"),
     yearOfBirth: 1980,
     wizard: true,
     ancestry: "half-blood",
@@ -52,7 +59,7 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Daniel Radcliffe",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/harry.jpg",
   },
@@ -60,11 +67,11 @@ export let dataCharacters: Characters = [
     id: "4c7e6819-a91a-45b2-a454-f931e4a7cce3",
     name: "Hermione Granger",
     slug: "hermione-granger",
-    alternate_names: ["Hermy", "Know-it-all", "Miss Grant", "Herm-own-ninny"],
+    alternateNames: ["Hermy", "Know-it-all", "Miss Grant", "Herm-own-ninny"],
     species: "human",
     gender: "female",
     house: "Gryffindor",
-    dateOfBirth: "19-09-1979",
+    dateOfBirth: new Date("19-09-1979"),
     yearOfBirth: 1979,
     wizard: true,
     ancestry: "muggleborn",
@@ -79,7 +86,7 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Emma Watson",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/hermione.jpeg",
   },
@@ -87,7 +94,15 @@ export let dataCharacters: Characters = [
     id: "c3b1f9a5-b87b-48bf-b00d-95b093ea6390",
     name: "Ron Weasley",
     slug: "ron-weasley",
-    alternate_names: ["Dragomir Despard", "Ronald", "Ickle Ronniekins", "Ronnie", "Wheezy", "Won-Won", "Roonil Wazlib"],
+    alternateNames: [
+      "Dragomir Despard",
+      "Ronald",
+      "Ickle Ronniekins",
+      "Ronnie",
+      "Wheezy",
+      "Won-Won",
+      "Roonil Wazlib",
+    ],
     species: "human",
     gender: "male",
     house: "Gryffindor",
@@ -106,7 +121,7 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Rupert Grint",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/ron.jpg",
   },
@@ -114,7 +129,7 @@ export let dataCharacters: Characters = [
     id: "af95bd8a-dfae-45bb-bc69-533860d34129",
     name: "Draco Malfoy",
     slug: "draco-malfoy",
-    alternate_names: [],
+    alternateNames: [],
     species: "human",
     gender: "male",
     house: "Slytherin",
@@ -133,7 +148,7 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Tom Felton",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/draco.jpg",
   },
@@ -141,7 +156,7 @@ export let dataCharacters: Characters = [
     id: "ca3827f0-375a-4891-aaa5-f5e8a5bad225",
     name: "Minerva McGonagall",
     slug: "minerva-mcGonagall",
-    alternate_names: [],
+    alternateNames: [],
     species: "human",
     gender: "female",
     house: "Gryffindor",
@@ -160,7 +175,7 @@ export let dataCharacters: Characters = [
     hogwartsStudent: false,
     hogwartsStaff: true,
     actor: "Dame Maggie Smith",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/mcgonagall.jpg",
   },

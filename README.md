@@ -1,3 +1,7 @@
+# Harry Potter API
+
+## Setup
+
 To install dependencies:
 
 ```sh
@@ -11,3 +15,7 @@ bun run dev
 ```
 
 open http://localhost:3000
+
+## API Documentation
+
+...?
