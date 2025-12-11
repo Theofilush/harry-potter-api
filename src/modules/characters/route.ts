@@ -18,3 +18,17 @@ characterRoute.get("/:slug", (c) => {
 
   return c.json(foundCharacter);
 });
+
+characterRoute.delete("/:slug", (c) => {
+  const slug = c.req.param("slug");
+
+  const foundCharacter = dataCharacters.findIndex((item) => item.slug === slug);
+
+  if (foundCharacter === -1) {
+    return c.notFound();
+  }
+
+  const deleted = dataCharacters.splice(foundCharacter, 1)[0];
+
+  return c.json({ responseCode: "success", responseMessage: "Deleted success" });
+});
