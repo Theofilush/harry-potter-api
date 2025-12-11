@@ -24,9 +24,9 @@ characterRoute.delete("/:slug", (c) => {
 
   const originalLength = dataCharacters.length;
 
-  const newItems = dataCharacters.filter((item) => item.slug !== slug);
+  const updatedCharaters = dataCharacters.filter((char) => char.slug !== slug);
   dataCharacters.length = 0;
-  dataCharacters.push(...newItems);
+  dataCharacters.push(...updatedCharaters);
 
   if (dataCharacters.length === originalLength) {
     return c.notFound();
