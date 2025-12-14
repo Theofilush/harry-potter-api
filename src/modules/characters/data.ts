@@ -2,12 +2,12 @@ type Character = {
   id: string;
   name: string;
   slug: string;
-  alternate_names: string[];
+  alternateNames: string[];
   species: string;
   gender: string;
   house: string | null;
-  dateOfBirth: string | null;
-  yearOfBirth: number | null;
+  birthDate: Date | null;
+  birthYear: number | null;
   wizard: boolean;
   ancestry: string | null;
   eyeColour: string | null;
@@ -21,9 +21,11 @@ type Character = {
   hogwartsStudent: boolean;
   hogwartsStaff: boolean;
   actor: string;
-  alternate_actors: string[];
+  alternateActors: string[];
   alive: boolean;
   image: string;
+  createdAt: Date;
+  updatedAt: Date | null;
 };
 
 type Characters = Character[];
@@ -33,12 +35,12 @@ export let dataCharacters: Characters = [
     id: "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8",
     name: "Harry Potter",
     slug: "harry-potter",
-    alternate_names: ["The Boy Who Lived", "The Chosen One", "Undesirable No. 1", "Potty"],
+    alternateNames: ["The Boy Who Lived", "The Chosen One", "Undesirable No. 1", "Potty"],
     species: "human",
     gender: "male",
     house: "Gryffindor",
-    dateOfBirth: "31-07-1980",
-    yearOfBirth: 1980,
+    birthDate: new Date("31-07-1980"),
+    birthYear: 1980,
     wizard: true,
     ancestry: "half-blood",
     eyeColour: "green",
@@ -52,20 +54,22 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Daniel Radcliffe",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/harry.jpg",
+    createdAt: new Date(),
+    updatedAt: null,
   },
   {
     id: "4c7e6819-a91a-45b2-a454-f931e4a7cce3",
     name: "Hermione Granger",
     slug: "hermione-granger",
-    alternate_names: ["Hermy", "Know-it-all", "Miss Grant", "Herm-own-ninny"],
+    alternateNames: ["Hermy", "Know-it-all", "Miss Grant", "Herm-own-ninny"],
     species: "human",
     gender: "female",
     house: "Gryffindor",
-    dateOfBirth: "19-09-1979",
-    yearOfBirth: 1979,
+    birthDate: new Date("19-09-1979"),
+    birthYear: 1979,
     wizard: true,
     ancestry: "muggleborn",
     eyeColour: "brown",
@@ -79,20 +83,22 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Emma Watson",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/hermione.jpeg",
+    createdAt: new Date(),
+    updatedAt: null,
   },
   {
     id: "c3b1f9a5-b87b-48bf-b00d-95b093ea6390",
     name: "Ron Weasley",
     slug: "ron-weasley",
-    alternate_names: ["Dragomir Despard", "Ronald", "Ickle Ronniekins", "Ronnie", "Wheezy", "Won-Won", "Roonil Wazlib"],
+    alternateNames: ["Dragomir Despard", "Ronald", "Ickle Ronniekins", "Ronnie", "Wheezy", "Won-Won", "Roonil Wazlib"],
     species: "human",
     gender: "male",
     house: "Gryffindor",
-    dateOfBirth: "01-03-1980",
-    yearOfBirth: 1980,
+    birthDate: new Date("01-03-1980"),
+    birthYear: 1980,
     wizard: true,
     ancestry: "pure-blood",
     eyeColour: "blue",
@@ -106,20 +112,22 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Rupert Grint",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/ron.jpg",
+    createdAt: new Date(),
+    updatedAt: null,
   },
   {
     id: "af95bd8a-dfae-45bb-bc69-533860d34129",
     name: "Draco Malfoy",
     slug: "draco-malfoy",
-    alternate_names: [],
+    alternateNames: [],
     species: "human",
     gender: "male",
     house: "Slytherin",
-    dateOfBirth: "05-06-1980",
-    yearOfBirth: 1980,
+    birthDate: new Date("05-06-1980"),
+    birthYear: 1980,
     wizard: true,
     ancestry: "pure-blood",
     eyeColour: "grey",
@@ -133,20 +141,22 @@ export let dataCharacters: Characters = [
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Tom Felton",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/draco.jpg",
+    createdAt: new Date(),
+    updatedAt: null,
   },
   {
     id: "ca3827f0-375a-4891-aaa5-f5e8a5bad225",
     name: "Minerva McGonagall",
     slug: "minerva-mcGonagall",
-    alternate_names: [],
+    alternateNames: [],
     species: "human",
     gender: "female",
     house: "Gryffindor",
-    dateOfBirth: "04-10-1925",
-    yearOfBirth: 1925,
+    birthDate: new Date("04-10-1925"),
+    birthYear: 1925,
     wizard: true,
     ancestry: "half-blood",
     eyeColour: "",
@@ -160,8 +170,10 @@ export let dataCharacters: Characters = [
     hogwartsStudent: false,
     hogwartsStaff: true,
     actor: "Dame Maggie Smith",
-    alternate_actors: [],
+    alternateActors: [],
     alive: true,
     image: "https://ik.imagekit.io/hpapi/mcgonagall.jpg",
+    createdAt: new Date(),
+    updatedAt: null,
   },
 ];
