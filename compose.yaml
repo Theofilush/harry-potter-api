@@ -1,6 +1,6 @@
 services:
   backend:
-    image: harry-potter-img # Remember to change the image name
+    image: harry-potter-img
     build:
       context: .
     ports:

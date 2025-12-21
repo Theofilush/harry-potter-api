@@ -137,7 +137,7 @@ export let dataCharacters: Characters = [
       core: "unicorn tail hair",
       length: 10,
     },
-    patronus: "",
+    patronus: null,
     hogwartsStudent: true,
     hogwartsStaff: false,
     actor: "Tom Felton",
@@ -150,7 +150,7 @@ export let dataCharacters: Characters = [
   {
     id: "ca3827f0-375a-4891-aaa5-f5e8a5bad225",
     name: "Minerva McGonagall",
-    slug: "minerva-mcGonagall",
+    slug: "minerva-mcgonagall",
     alternateNames: [],
     species: "human",
     gender: "female",
@@ -159,7 +159,7 @@ export let dataCharacters: Characters = [
     birthYear: 1925,
     wizard: true,
     ancestry: "half-blood",
-    eyeColour: "",
+    eyeColour: null,
     hairColour: "black",
     wand: {
       wood: "fir",
