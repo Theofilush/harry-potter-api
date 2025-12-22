@@ -12,7 +12,9 @@ characterRoute.get("/", (c) => {
 characterRoute.get("/:slug", (c) => {
   const slug = c.req.param("slug");
 
-  const character = characters.find((character) => character.slug.toLowerCase() === slug.toLowerCase());
+  const character = characters.find(
+    (character) => character.slug.toLowerCase() === slug.toLowerCase()
+  );
 
   if (!character) {
     return c.notFound();
@@ -24,7 +26,9 @@ characterRoute.get("/:slug", (c) => {
 characterRoute.delete("/:id", (c) => {
   const id = c.req.param("id");
 
-  const updatedCharacters = characters.filter((character) => character.id !== id);
+  const updatedCharacters = characters.filter(
+    (character) => character.id !== id
+  );
 
   if (characters.length === updatedCharacters.length) {
     return c.notFound();
@@ -42,7 +46,7 @@ characterRoute.post("/", async (c) => {
   const nameCharacter = body.name;
 
   if (!nameCharacter || nameCharacter.length === 0) {
-    return c.json({ error: "Bad Request" }, 400);
+    return c.json({ message: "Character name is required" }, 400);
   }
 
   const newCharacter = {
@@ -52,38 +56,34 @@ characterRoute.post("/", async (c) => {
     updatedAt: null,
   };
 
-  const updatedCharacter = [...dataCharacters, newCharacter];
-  characters = updatedCharacter;
+  const updatedCharacters = [...characters, newCharacter];
+  characters = updatedCharacters;
 
-  return c.json(
-    {
-      message: `Character ${nameCharacter} added`,
-    },
-    201
-  );
+  return c.json(newCharacter, 201);
 });
 
 characterRoute.put("/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
 
+  const character = characters.find((character) => character.id === id);
+
+  if (!character) {
+    return c.notFound();
+  }
+
   const newCharacter = {
+    ...character,
     ...body,
     updatedAt: new Date(),
   };
 
-  const updatedCharacter = dataCharacters.map((character) => {
-    if (character.id === id) {
-      return {
-        ...character,
-        ...newCharacter,
-      };
-    } else return character;
+  const updatedCharacters = characters.map((character) => {
+    if (character.id === id) return newCharacter;
+    else return character;
   });
 
-  characters = updatedCharacter;
+  characters = updatedCharacters;
 
-  return c.json({
-    message: `Character ${id} updated`,
-  });
+  return c.json(newCharacter);
 });

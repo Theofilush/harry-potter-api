@@ -1,6 +1,6 @@
 services:
   backend:
-    image: harry-potter-img
+    image: harry-potter-api
     build:
       context: .
     ports:
