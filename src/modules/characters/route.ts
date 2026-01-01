@@ -8,6 +8,7 @@ export const characterRoute = new Hono();
 characterRoute.get("/", (c) => {
   return c.json(characters);
 });
+//test
 
 characterRoute.get("/:slug", (c) => {
   const slug = c.req.param("slug");
