@@ -1,36 +1,6 @@
-type Character = {
-  id: string;
-  name: string;
-  slug: string;
-  alternateNames: string[];
-  species: string;
-  gender: string;
-  house: string | null;
-  birthDate: Date | null;
-  birthYear: number | null;
-  wizard: boolean;
-  ancestry: string | null;
-  eyeColour: string | null;
-  hairColour: string | null;
-  wand: {
-    wood: string | null;
-    core: string | null;
-    length: number | null;
-  };
-  patronus: string | null;
-  hogwartsStudent: boolean;
-  hogwartsStaff: boolean;
-  actor: string;
-  alternateActors: string[];
-  alive: boolean;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-};
+import { Characters } from "./schema";
 
-type Characters = Character[];
-
-export let dataCharacters: Characters = [
+export const dataCharacters: Characters = [
   {
     id: "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8",
     name: "Harry Potter",
