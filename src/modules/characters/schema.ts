@@ -14,11 +14,12 @@ export const CharacterSchema = z.object({
   ancestry: z.string().min(1).nullable(),
   eyeColour: z.string().min(1).nullable(),
   hairColour: z.string().min(1).nullable(),
-  wand: z.object({
-    wood: z.string().min(1).nullable(),
-    core: z.string().min(1).nullable(),
-    length: z.number().nullable(),
-  }),
+  // TODO: wandName: z.string(),
+  // wand: z.object({
+  //   wood: z.string().min(1).nullable(),
+  //   core: z.string().min(1).nullable(),
+  //   length: z.number().nullable(),
+  // }),
   patronus: z.string().min(1).nullable(),
   hogwartsStudent: z.boolean(),
   hogwartsStaff: z.boolean(),
