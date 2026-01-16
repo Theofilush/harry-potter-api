@@ -1,12 +1,14 @@
 import { Hono } from "hono";
 import { dataCharacters } from "./data";
+import { prisma } from "../../lib/prisma";
 
 let characters = dataCharacters;
 
 export const characterRoute = new Hono();
 
-characterRoute.get("/", (c) => {
-  return c.json(characters);
+characterRoute.get("/", async (c) => {
+  const allCharacters = await prisma.character.findMany();
+  return c.json(allCharacters);
 });
 
 characterRoute.get("/:slug", (c) => {
@@ -82,4 +84,24 @@ characterRoute.put("/:id", async (c) => {
   characters = updatedCharacters;
 
   return c.json(newCharacter);
+});
+
+characterRoute.patch("/:id", async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  const character = characters.find((character) => character.id === id);
+
+  if (!character) {
+    return c.notFound();
+  }
+
+  const updatedCharacter = {
+    ...character,
+    ...body,
+    updatedAt: new Date(),
+  };
+
+  characters = characters.map((character) => (character.id === id ? updatedCharacter : character));
+
+  return c.json(updatedCharacter);
 });
