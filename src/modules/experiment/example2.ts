@@ -1,17 +1,21 @@
 import { prisma } from "../../lib/prisma";
 
 async function main() {
-  //   const newCharacter = await prisma.character.create({
-  //     data: {
-  //       name: "Bidu Akasha",
-  //       slug: "bidu-akasha",
-  //       email: "",
-  //     },
-  //   });
-  //   console.log("Created user:", newCharacter);
+  try {
+    const newCharacter = await prisma.character.create({
+      data: {
+        name: "Bidu Akasha",
+        slug: "bidu-akasha",
+        email: "",
+      },
+    });
+    console.log("Created character:", newCharacter);
 
-  const allCharacters = await prisma.character.findMany();
-  console.log("All users:", JSON.stringify(allCharacters, null, 2));
+    const allCharacters = await prisma.character.findMany();
+    console.log("All characters:", JSON.stringify(allCharacters, null, 2));
+  } catch (error) {
+    console.error("Failed to create and find characters:");
+  }
 }
 
 main()
