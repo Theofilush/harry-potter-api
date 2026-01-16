@@ -17,7 +17,7 @@ model Character{
   id Int @id @default(autoincrement())
 
   name String
-  slug String @db.VarChar(300)
+  slug String @db.VarChar(300) @unique
 
   email String?
 
