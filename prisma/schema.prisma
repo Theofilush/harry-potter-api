@@ -13,14 +13,32 @@ datasource db {
   provider = "postgresql"
 }
 
-model Character{
-  id Int @id @default(autoincrement())
+model Character {
+  // id Int @id @default(autoincrement())
 
-  name String
-  slug String @db.VarChar(300) @unique
+  id              String    @id @default(uuid())
+  name            String
+  slug            String    @unique @db.VarChar(300)
+  alternateNames  String    @db.VarChar(300)
+  species         String    @db.VarChar(300)
+  gender          String    @db.VarChar(300)
+  house           String    @db.VarChar(300)
+  // birthDate       String  @db.VarChar(300)
+  birthDate       DateTime?
+  birthYear       Int       @db.Integer
+  wizard          Boolean
+  ancestry        String    @db.VarChar(300)
+  eyeColour       String    @db.VarChar(300)
+  hairColour      String    @db.VarChar(300)
+  wand            String    @db.VarChar(300)
+  patronus        String    @db.VarChar(300)
+  hogwartsStudent Boolean
+  hogwartsStaff   Boolean
+  actor           String    @db.VarChar(300)
+  alternateActors String?   @db.VarChar(300)
+  alive           Boolean
+  image           String    @db.VarChar(300)
 
-  email String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt
 }
