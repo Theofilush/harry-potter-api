@@ -29,6 +29,15 @@ characterRoute.get("/:slug", async (c) => {
     where: {
       slug: slug,
     },
+    include: {
+      wands: {
+        select: {
+          wood: true,
+          core: true,
+          length: true,
+        },
+      },
+    },
   });
 
   if (!character) {
@@ -121,13 +130,34 @@ characterRoute.post("/", async (c) => {
 characterRoute.put("/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
-  const { ...newCharacter } = body;
+  const { wands, ...newCharacter } = body;
 
-  const updatedCharacter = await prisma.character.update({
+  const character = await prisma.character.findUnique({
     where: {
       id: id,
     },
-    data: newCharacter,
+  });
+
+  if (!character) {
+    return c.notFound();
+  }
+
+  const updatedCharacter = await prisma.character.update({
+    where: { id: id },
+    data: {
+      ...newCharacter,
+      wands: wands
+        ? {
+            deleteMany: {}, // remove all wands relate character ID
+            create: wands.map((wand: any) => ({
+              wood: wand.wood ?? "",
+              core: wand.core ?? "",
+              length: Number(wand.length) || 0,
+            })),
+          }
+        : undefined,
+    },
+    include: { wands: true },
   });
 
   return c.json(updatedCharacter);
