@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const WandSchema = z.object({
+  wood: z.string().min(1),
+  core: z.string().min(1),
+  length: z.number().positive(),
+});
+
 export const CharacterSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -16,12 +22,13 @@ export const CharacterSchema = z.object({
   ancestry: z.string().min(1).nullable(),
   eyeColour: z.string().min(1).nullable(),
   hairColour: z.string().min(1).nullable(),
-  wand: z.string().min(1).nullable(),
+  // wand: z.string().min(1).nullable(),
   // wand: z.object({
   //   wood: z.string().min(1).nullable(),
   //   core: z.string().min(1).nullable(),
   //   length: z.number().nullable(),
   // }),
+  wands: z.array(WandSchema).optional().nullable(),
   patronus: z.string().min(1).nullable(),
   hogwartsStudent: z.boolean(),
   hogwartsStaff: z.boolean(),

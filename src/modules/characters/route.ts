@@ -7,7 +7,12 @@ let characters = dataCharacters;
 export const characterRoute = new Hono();
 
 characterRoute.get("/", async (c) => {
-  const allCharacters = await prisma.character.findMany();
+  const allCharacters = await prisma.character.findMany({
+    relationLoadStrategy: "join",
+    include: {
+      wands: true,
+    },
+  });
   return c.json(allCharacters);
 });
 

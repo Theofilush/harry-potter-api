@@ -1,12 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -14,8 +9,6 @@ datasource db {
 }
 
 model Character {
-  // id Int @id @default(autoincrement())
-
   id              String    @id @default(uuid())
   name            String
   slug            String    @unique @db.VarChar(300)
@@ -23,14 +16,13 @@ model Character {
   species         String    @db.VarChar(300)
   gender          String    @db.VarChar(300)
   house           String    @db.VarChar(300)
-  // birthDate       String  @db.VarChar(300)
   birthDate       DateTime?
   birthYear       Int       @db.Integer
   wizard          Boolean
   ancestry        String    @db.VarChar(300)
   eyeColour       String    @db.VarChar(300)
   hairColour      String    @db.VarChar(300)
-  wand            String    @db.VarChar(300)
+  // wand            String    @db.VarChar(300)
   patronus        String    @db.VarChar(300)
   hogwartsStudent Boolean
   hogwartsStaff   Boolean
@@ -41,4 +33,15 @@ model Character {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now()) @updatedAt
+
+  wands Wand[]
+}
+
+model Wand {
+  id          String    @id @default(uuid())
+  wood        String    @db.VarChar(300)
+  core        String    @db.VarChar(300)
+  length      Float
+  character   Character @relation(fields: [characterId], references: [id])
+  characterId String
 }

@@ -17,7 +17,7 @@ async function main() {
         ancestry: character.ancestry || "",
         eyeColour: character.eyeColour || "",
         hairColour: character.hairColour || "",
-        wand: character.wand || "",
+        // wand: character.wand || "",
         patronus: character.patronus || "",
         hogwartsStudent: character.hogwartsStudent,
         hogwartsStaff: character.hogwartsStaff,
@@ -39,7 +39,16 @@ async function main() {
         ancestry: character.ancestry || "",
         eyeColour: character.eyeColour || "",
         hairColour: character.hairColour || "",
-        wand: character.wand || "",
+        // wand: character.wand || "",
+        wands: character.wands
+          ? {
+              create: character.wands.map((w) => ({
+                wood: w.wood,
+                core: w.core,
+                length: w.length,
+              })),
+            }
+          : undefined,
         patronus: character.patronus || "",
         hogwartsStudent: character.hogwartsStudent,
         hogwartsStaff: character.hogwartsStaff,
