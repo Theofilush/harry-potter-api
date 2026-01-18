@@ -3,7 +3,6 @@ import { dataCharacters } from "./data";
 import { prisma } from "../../lib/prisma";
 
 let characters = dataCharacters;
-let characterss = dataCharacters;
 
 export const characterRoute = new Hono();
 
@@ -12,10 +11,14 @@ characterRoute.get("/", async (c) => {
   return c.json(allCharacters);
 });
 
-characterRoute.get("/:slug", (c) => {
+characterRoute.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
 
-  const character = characters.find((character) => character.slug.toLowerCase() === slug.toLowerCase());
+  const character = await prisma.character.findUnique({
+    where: {
+      slug: slug,
+    },
+  });
 
   if (!character) {
     return c.notFound();
@@ -24,16 +27,14 @@ characterRoute.get("/:slug", (c) => {
   return c.json(character);
 });
 
-characterRoute.delete("/:id", (c) => {
+characterRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");
 
-  const updatedCharacters = characters.filter((character) => character.id !== id);
-
-  if (characters.length === updatedCharacters.length) {
-    return c.notFound();
-  }
-
-  characters = updatedCharacters;
+  const deletedCharacter = await prisma.character.delete({
+    where: {
+      id: id,
+    },
+  });
 
   return c.json({
     message: `Character ${id} deleted`,
@@ -42,67 +43,33 @@ characterRoute.delete("/:id", (c) => {
 
 characterRoute.post("/", async (c) => {
   const body = await c.req.json();
-  const nameCharacter = body.name;
-
-  if (!nameCharacter || nameCharacter.length === 0) {
-    return c.json({ message: "Character name is required" }, 400);
-  }
 
   const newCharacter = {
     ...body,
-    id: crypto.randomUUID(),
-    createdAt: new Date(),
-    updatedAt: null,
+    birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
   };
 
-  const updatedCharacters = [...characters, newCharacter];
-  characters = updatedCharacters;
-
-  return c.json(newCharacter, 201);
+  const upsertCharacter = await prisma.character.upsert({
+    where: {
+      slug: newCharacter.slug,
+    },
+    update: newCharacter,
+    create: newCharacter,
+  });
+  return c.json(upsertCharacter, 201);
 });
 
 characterRoute.put("/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
+  const { ...newCharacter } = body;
 
-  const character = characters.find((character) => character.id === id);
-
-  if (!character) {
-    return c.notFound();
-  }
-
-  const newCharacter = {
-    ...character,
-    ...body,
-    updatedAt: new Date(),
-  };
-
-  const updatedCharacters = characters.map((character) => {
-    if (character.id === id) return newCharacter;
-    else return character;
+  const updatedCharacter = await prisma.character.update({
+    where: {
+      id: id,
+    },
+    data: newCharacter,
   });
-
-  characters = updatedCharacters;
-
-  return c.json(newCharacter);
-});
-
-characterRoute.patch("/:id", async (c) => {
-  const id = c.req.param("id");
-  const body = await c.req.json();
-  const character = characters.find((character) => character.id === id);
-
-  if (!character) {
-    return c.notFound();
-  }
-
-  const updatedCharacter = {
-    ...character,
-    ...body,
-    updatedAt: new Date(),
-  };
-
-  characters = characters.map((character) => (character.id === id ? updatedCharacter : character));
 
   return c.json(updatedCharacter);
 });
