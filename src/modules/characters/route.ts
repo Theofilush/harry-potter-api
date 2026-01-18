@@ -3,6 +3,7 @@ import { dataCharacters } from "./data";
 import { prisma } from "../../lib/prisma";
 
 let characters = dataCharacters;
+let characterss = dataCharacters;
 
 export const characterRoute = new Hono();
 
