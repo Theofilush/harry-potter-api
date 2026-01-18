@@ -16,7 +16,6 @@ export const dataCharacters: Characters = [
     ancestry: "half-blood",
     eyeColour: "green",
     hairColour: "black",
-    // wand: "holly",
     wands: [
       {
         wood: "holly",
@@ -50,7 +49,6 @@ export const dataCharacters: Characters = [
     ancestry: "muggleborn",
     eyeColour: "brown",
     hairColour: "brown",
-    // wand: "holly",
     wands: [
       {
         wood: "vine",
@@ -84,7 +82,6 @@ export const dataCharacters: Characters = [
     ancestry: "pure-blood",
     eyeColour: "blue",
     hairColour: "red",
-    // wand: "holly",
     wands: [
       {
         wood: "willow",
@@ -118,7 +115,6 @@ export const dataCharacters: Characters = [
     ancestry: "pure-blood",
     eyeColour: "grey",
     hairColour: "blonde",
-    // wand: "holly",
     wands: [
       {
         wood: "hawthorn",
@@ -152,7 +148,6 @@ export const dataCharacters: Characters = [
     ancestry: "half-blood",
     eyeColour: null,
     hairColour: "black",
-    // wand: "holly",
     wands: [
       {
         wood: "fir",

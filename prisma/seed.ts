@@ -41,7 +41,6 @@ async function main() {
         ancestry: character.ancestry || "",
         eyeColour: character.eyeColour || "",
         hairColour: character.hairColour || "",
-        // wand: character.wand || "",
         wands: character.wands
           ? {
               create: character.wands.map((wand) => ({
@@ -63,12 +62,10 @@ async function main() {
     });
 
     if (character.wands) {
-      // hapus semua wand lama
       await prisma.wand.deleteMany({
         where: { characterId: upsertCharacter.id },
       });
 
-      // buat ulang sesuai data
       await prisma.wand.createMany({
         data: character.wands.map((wand) => ({
           wood: wand.wood ?? "",
