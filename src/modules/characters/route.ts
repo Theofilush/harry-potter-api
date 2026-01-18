@@ -50,7 +50,11 @@ characterRoute.get("/:slug", async (c) => {
 characterRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");
 
-  const deletedCharacter = await prisma.character.delete({
+  await prisma.wand.deleteMany({
+    where: { characterId: id },
+  });
+
+  await prisma.character.delete({
     where: {
       id: id,
     },
