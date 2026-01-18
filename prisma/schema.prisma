@@ -22,7 +22,6 @@ model Character {
   ancestry        String    @db.VarChar(300)
   eyeColour       String    @db.VarChar(300)
   hairColour      String    @db.VarChar(300)
-  // wand            String    @db.VarChar(300)
   patronus        String    @db.VarChar(300)
   hogwartsStudent Boolean
   hogwartsStaff   Boolean
