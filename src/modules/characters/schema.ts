@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const WandSchema = z.object({
-  wood: z.string().min(1),
-  core: z.string().min(1),
-  length: z.number().positive(),
+  wood: z.string().min(1).nullable(),
+  core: z.string().min(1).nullable(),
+  length: z.number().nonnegative,
 });
 
 export const CharacterSchema = z.object({

@@ -8,9 +8,15 @@ export const characterRoute = new Hono();
 
 characterRoute.get("/", async (c) => {
   const allCharacters = await prisma.character.findMany({
-    relationLoadStrategy: "join",
+    // relationLoadStrategy: "join",
     include: {
-      wands: true,
+      wands: {
+        select: {
+          wood: true,
+          core: true,
+          length: true,
+        },
+      },
     },
   });
   return c.json(allCharacters);
@@ -58,9 +64,57 @@ characterRoute.post("/", async (c) => {
     where: {
       slug: newCharacter.slug,
     },
-    update: newCharacter,
-    create: newCharacter,
+    update: {
+      name: newCharacter.name,
+      slug: newCharacter.slug,
+      alternateNames: newCharacter.alternateNames,
+      species: newCharacter.species,
+      gender: newCharacter.gender,
+      house: newCharacter.house,
+      birthDate: newCharacter.birthDate,
+      birthYear: newCharacter.birthYear,
+      wizard: newCharacter.wizard,
+      ancestry: newCharacter.ancestry,
+      eyeColour: newCharacter.eyeColour,
+      hairColour: newCharacter.hairColour,
+      patronus: newCharacter.patronus,
+      hogwartsStudent: newCharacter.hogwartsStudent,
+      hogwartsStaff: newCharacter.hogwartsStaff,
+      actor: newCharacter.actor,
+      alternateActors: newCharacter.alternateActors,
+      alive: newCharacter.alive,
+      image: newCharacter.image,
+    },
+    create: {
+      ...newCharacter,
+      wands: newCharacter.wands
+        ? {
+            create: newCharacter.wands.map((wand: any) => ({
+              wood: wand.wood,
+              core: wand.core,
+              length: wand.length,
+            })),
+          }
+        : undefined,
+    },
   });
+
+  // Create or Update Wands
+  if (newCharacter.wands) {
+    await prisma.wand.deleteMany({
+      where: { characterId: upsertCharacter.id },
+    });
+
+    await prisma.wand.createMany({
+      data: newCharacter.wands.map((wand: any) => ({
+        wood: wand.wood,
+        core: wand.core,
+        length: wand.length,
+        characterId: upsertCharacter.id,
+      })),
+    });
+  }
+
   return c.json(upsertCharacter, 201);
 });
 

@@ -39,9 +39,9 @@ model Character {
 
 model Wand {
   id          String    @id @default(uuid())
-  wood        String    @db.VarChar(300)
-  core        String    @db.VarChar(300)
-  length      Float
+  wood        String?   @db.VarChar(300)
+  core        String?   @db.VarChar(300)
+  length      Float?
   character   Character @relation(fields: [characterId], references: [id])
   characterId String
 }

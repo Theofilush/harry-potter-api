@@ -3,7 +3,10 @@ import { dataCharacters } from "../src/modules/characters/data";
 
 async function main() {
   for (const character of dataCharacters) {
-    await prisma.character.upsert({
+    const upsertCharacter = await prisma.character.upsert({
+      where: {
+        slug: character.slug,
+      },
       update: {
         name: character.name,
         slug: character.slug,
@@ -17,7 +20,6 @@ async function main() {
         ancestry: character.ancestry || "",
         eyeColour: character.eyeColour || "",
         hairColour: character.hairColour || "",
-        // wand: character.wand || "",
         patronus: character.patronus || "",
         hogwartsStudent: character.hogwartsStudent,
         hogwartsStaff: character.hogwartsStaff,
@@ -42,10 +44,10 @@ async function main() {
         // wand: character.wand || "",
         wands: character.wands
           ? {
-              create: character.wands.map((w) => ({
-                wood: w.wood,
-                core: w.core,
-                length: w.length,
+              create: character.wands.map((wand) => ({
+                wood: wand.wood ?? "",
+                core: wand.core ?? "",
+                length: Number(wand.length) || 0,
               })),
             }
           : undefined,
@@ -57,10 +59,26 @@ async function main() {
         alive: character.alive,
         image: character.image,
       },
-      where: {
-        slug: character.slug,
-      },
+      include: { wands: true },
     });
+
+    if (character.wands) {
+      // hapus semua wand lama
+      await prisma.wand.deleteMany({
+        where: { characterId: upsertCharacter.id },
+      });
+
+      // buat ulang sesuai data
+      await prisma.wand.createMany({
+        data: character.wands.map((wand) => ({
+          wood: wand.wood ?? "",
+          core: wand.core ?? "",
+          length: Number(wand.length) || 0,
+          characterId: upsertCharacter.id,
+        })),
+      });
+    }
+
     console.log(`Created character: ${character.name}`);
   }
 }
