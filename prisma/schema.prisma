@@ -9,38 +9,62 @@ datasource db {
 }
 
 model Character {
-  id              String    @id @default(uuid())
-  name            String
-  slug            String    @unique @db.VarChar(300)
-  alternateNames  String    @db.VarChar(300)
-  species         String    @db.VarChar(300)
-  gender          String    @db.VarChar(300)
-  house           String    @db.VarChar(300)
-  birthDate       DateTime?
-  birthYear       Int       @db.Integer
-  wizard          Boolean
-  ancestry        String    @db.VarChar(300)
-  eyeColour       String    @db.VarChar(300)
-  hairColour      String    @db.VarChar(300)
-  patronus        String    @db.VarChar(300)
-  hogwartsStudent Boolean
-  hogwartsStaff   Boolean
-  actor           String    @db.VarChar(300)
-  alternateActors String?   @db.VarChar(300)
-  alive           Boolean
-  image           String    @db.VarChar(300)
+  id String @id @default(ulid())
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @default(now()) @updatedAt
+  // TODO: reduce the data type size
+
+  name           String
+  slug           String @unique @db.VarChar(300)
+  alternateNames String @db.VarChar(300)
+
+  species String @db.VarChar(300) // Human, Elf?
+  gender  String @db.VarChar(10) // male, female, unknown
+
+  birthDate DateTime?
+  birthYear Int?      @db.Integer
+
+  ancestry   String @db.VarChar(300) // ??
+  eyeColour  String @db.VarChar(10) // ?
+  hairColour String @db.VarChar(10) // ?
+  patronus   String @db.VarChar(300) // ?
+
+  isAlive           Boolean
+  isWizard          Boolean
+  isHogwartsStudent Boolean // ?
+  isHogwartsStaff   Boolean // ?
+
+  actor           String  @db.VarChar(300)
+  alternateActors String? @db.VarChar(300)
+
+  imageUrl String @db.VarChar(300)
 
   wands Wand[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Wand {
-  id          String    @id @default(uuid())
-  wood        String?   @db.VarChar(300)
-  core        String?   @db.VarChar(300)
-  length      Float?
-  character   Character @relation(fields: [characterId], references: [id])
+  id String @id @default(uuid())
+
+  slug String @unique
+  name String
+
+  woodName String? @db.VarChar(300)
+  coreName String? @db.VarChar(300)
+  length   Float? // cm
+
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   characterId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
+
+// TODO
+// model House
+// slug
+// name // Griffyndor, Slytherin, Hufflepuff, Ravenclaw
+
+// TODO
+// model Actor

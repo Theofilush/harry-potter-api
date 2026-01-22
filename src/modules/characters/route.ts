@@ -8,13 +8,10 @@ export const characterRoute = new Hono();
 
 characterRoute.get("/", async (c) => {
   const allCharacters = await prisma.character.findMany({
-    // relationLoadStrategy: "join",
     include: {
       wands: {
-        select: {
-          wood: true,
-          core: true,
-          length: true,
+        include: {
+          creator: true,
         },
       },
     },
