@@ -170,7 +170,7 @@ characterRoute.put("/:id", async (c) => {
 
 const route = createRoute({
   method: "get",
-  path: "/users/{id}",
+  path: "/{id}",
   request: {
     params: ParamsSchema,
   },
