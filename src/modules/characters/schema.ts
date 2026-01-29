@@ -10,7 +10,7 @@ export const CharacterSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   slug: z.string().min(1),
-  alternateNames: z.string().min(1).nullable(),
+  alternateNames: z.string().min(1),
   // alternateNames: z.array(z.string()),
   species: z.string().min(1),
   gender: z.string().min(1),
