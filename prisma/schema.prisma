@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Character {
-  id              String    @id @default(uuid())
+  id              String    @id @default(cuid())
   name            String
   slug            String    @unique @db.VarChar(300)
   alternateNames  String    @db.VarChar(300)
@@ -37,7 +37,7 @@ model Character {
 }
 
 model Wand {
-  id          String    @id @default(uuid())
+  id          String    @id @default(cuid())
   wood        String?   @db.VarChar(300)
   core        String?   @db.VarChar(300)
   length      Float?

@@ -1,10 +1,11 @@
-import { Hono } from "hono";
 import { dataCharacters } from "./data";
 import { prisma } from "../../lib/prisma";
+import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
+import { ParamsSchema, UserSchema } from "./schema";
 
 let characters = dataCharacters;
 
-export const characterRoute = new Hono();
+export const characterRoute = new OpenAPIHono();
 
 characterRoute.get("/", async (c) => {
   const allCharacters = await prisma.character.findMany({
@@ -165,4 +166,31 @@ characterRoute.put("/:id", async (c) => {
   });
 
   return c.json(updatedCharacter);
+});
+
+const route = createRoute({
+  method: "get",
+  path: "/{id}",
+  request: {
+    params: ParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSchema,
+        },
+      },
+      description: "Retrieve the user",
+    },
+  },
+});
+
+characterRoute.openapi(route, (c) => {
+  const { id } = c.req.valid("param");
+  return c.json({
+    id,
+    age: 20,
+    name: "Ultra-man",
+  });
 });
