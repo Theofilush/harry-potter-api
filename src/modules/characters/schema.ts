@@ -26,13 +26,9 @@ export const CharacterSchema = z.object({
   ancestry: z.string().min(1).nullable().openapi({ example: "half-blood" }),
   eyeColour: z.string().min(1).nullable().openapi({ example: "hazel" }),
   hairColour: z.string().min(1).openapi({ example: "dark brown" }),
-  wands: z
-    .array(WandSchema)
-    .optional()
-    // .nullable()
-    .openapi({
-      example: [{ wood: "holly", core: "phoenix feather", length: 11 }],
-    }),
+  wands: z.array(WandSchema).openapi({
+    example: [{ wood: "holly", core: "phoenix feather", length: 11 }],
+  }),
   patronus: z.string().min(1).nullable().openapi({ example: "stag" }),
   actor: z.string().min(1).openapi({ example: "Daniel Radcliffe" }),
   alternateActors: z.string().min(1).openapi({ example: "" }),

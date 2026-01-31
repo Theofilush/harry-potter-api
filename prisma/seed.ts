@@ -4,50 +4,44 @@ import { dataCharacters } from "../src/modules/characters/data";
 
 async function main() {
   for (const character of dataCharacters) {
+    const { wands, ...characterData } = character;
     await prisma.character.upsert({
       where: { slug: character.slug },
       update: {
-        ...character,
-        wands: character.wands
-          ? {
-              upsert: character.wands.map((wand) => ({
-                where: { slug: wand.slug },
-                update: {
-                  name: wand.name ?? "Unknown Wand",
-                  slug: wand.slug ?? `wand-${cuid()}`,
-                  wood: wand.wood ?? "",
-                  core: wand.core ?? "",
-                  length: wand.length ?? 0,
-                },
-                create: {
-                  name: wand.name ?? "Unknown Wand",
-                  slug: wand.slug ?? `wand-${cuid()}`,
-                  wood: wand.wood ?? "",
-                  core: wand.core ?? "",
-                  length: wand.length ?? 0,
-                },
-              })),
-            }
-          : undefined,
+        ...characterData,
       },
       create: {
-        ...character,
-        wands: character.wands
-          ? {
-              create: character.wands.map((wand) => ({
-                name: wand.name ?? "Unknown Wand",
-                slug: wand.slug ?? `wand-${cuid()}`,
-                wood: wand.wood ?? "",
-                core: wand.core ?? "",
-                length: wand.length ?? 0,
-              })),
-            }
-          : undefined,
+        ...characterData,
       },
       include: { wands: true },
     });
 
     console.log(`🧙 ${character.name}`);
+  }
+
+  for (const character of dataCharacters) {
+    for (const wand of character.wands) {
+      await prisma.wand.upsert({
+        where: { slug: wand.slug },
+        update: {
+          name: wand.name,
+          slug: wand.slug,
+          wood: wand.wood,
+          core: wand.core,
+          length: wand.length,
+          character: { connect: { slug: character.slug } },
+        },
+        create: {
+          slug: wand.slug,
+          name: wand.name,
+          wood: wand.wood,
+          core: wand.core,
+          length: wand.length,
+          character: { connect: { slug: character.slug } },
+        },
+      });
+      console.log(` 🪄  ${wand.slug}-wand`);
+    }
   }
 }
 
