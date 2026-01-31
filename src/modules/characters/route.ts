@@ -167,21 +167,6 @@ characterRoute.put("/:id", async (c) => {
   return c.json(updatedCharacter);
 });
 
-const route = createRoute({
-  method: "get",
-  path: "/",
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: CharactersSchema,
-        },
-      },
-      description: "Retrieve the user",
-    },
-  },
-});
-
 characterRoute.openapi(
   createRoute({
     method: "get",
