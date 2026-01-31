@@ -36,7 +36,7 @@ export const CharacterSchema = z.object({
   alternateActors: z.string().min(1).nullable().openapi({ example: "" }),
   // alternateActors: z.array(z.string()),
   alive: z.boolean().openapi({ example: true }),
-  image: z.string().min(1).openapi({ example: "https://ik.imagekit.io/hpapi/harry.jpg" }),
+  imageUrl: z.string().min(1).openapi({ example: "https://ik.imagekit.io/hpapi/harry.jpg" }),
   createdAt: z.date().openapi({ example: "2026-01-18T14:43:15.388Z" }),
   updatedAt: z.date().nullable().openapi({ example: "2026-01-18T15:09:08.238Z" }),
 });

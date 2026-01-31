@@ -25,7 +25,7 @@ export const CharacterSchema = z.object({
   actor: z.string().min(1),
   alternateActors: z.array(z.string()),
   alive: z.boolean(),
-  image: z.string().min(1),
+  imageUrl: z.string().min(1),
   createdAt: z.date(),
   updatedAt: z.date().nullable(),
 });

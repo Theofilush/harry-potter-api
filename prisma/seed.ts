@@ -26,7 +26,7 @@ async function main() {
         actor: character.actor,
         alternateActors: character.alternateActors,
         alive: character.alive,
-        image: character.image,
+        imageUrl: character.imageUrl,
       },
       create: {
         name: character.name,
@@ -56,7 +56,7 @@ async function main() {
         actor: character.actor,
         alternateActors: character.alternateActors,
         alive: character.alive,
-        image: character.image,
+        imageUrl: character.imageUrl,
       },
       include: { wands: true },
     });
@@ -76,7 +76,7 @@ async function main() {
       });
     }
 
-    console.log(`Created character: ${character.name}`);
+    console.log(`🧙 ${character.name}`);
   }
 }
 

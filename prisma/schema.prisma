@@ -28,7 +28,7 @@ model Character {
   actor           String    @db.VarChar(300)
   alternateActors String?   @db.VarChar(300)
   alive           Boolean
-  image           String    @db.VarChar(300)
+  imageUrl        String    @db.VarChar(300)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now()) @updatedAt

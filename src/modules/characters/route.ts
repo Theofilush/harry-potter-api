@@ -97,7 +97,7 @@ characterRoute.post("/", async (c) => {
       actor: newCharacter.actor,
       alternateActors: newCharacter.alternateActors,
       alive: newCharacter.alive,
-      image: newCharacter.image,
+      imageUrl: newCharacter.Url,
     },
     create: {
       ...newCharacter,

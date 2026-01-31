@@ -34,7 +34,7 @@ export const CharacterSchema = z.object({
   actor: z.string(),
   alternate_actors: z.array(z.string()),
   alive: z.boolean(),
-  image: z.string().url(),
+  imageUrl: z.string().url(),
 });
 
 export type Character = z.infer<typeof CharacterSchema>;

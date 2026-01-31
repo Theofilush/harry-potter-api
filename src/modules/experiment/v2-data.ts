@@ -32,7 +32,7 @@ export type Character = {
   actor: string;
   alternate_actors: string[];
   alive: boolean;
-  image: string;
+  imageUrl: string;
 };
 
 export type Characters = Character[];
