@@ -1,27 +1,26 @@
 import { dataCharacters } from "./data";
 import { prisma } from "../../lib/prisma";
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import { ParamsSchema, UserSchema } from "./schema";
+import { ParamsSchema, UserSchema, CharactersSchema, CharacterSchema } from "./schema";
 
 let characters = dataCharacters;
 
 export const characterRoute = new OpenAPIHono();
 
-characterRoute.get("/", async (c) => {
-  const allCharacters = await prisma.character.findMany({
-    // relationLoadStrategy: "join",
-    include: {
-      wands: {
-        select: {
-          wood: true,
-          core: true,
-          length: true,
-        },
-      },
-    },
-  });
-  return c.json(allCharacters);
-});
+// characterRoute.get("/", async (c) => {
+//   const allCharacters = await prisma.character.findMany({
+//     include: {
+//       wands: {
+//         select: {
+//           wood: true,
+//           core: true,
+//           length: true,
+//         },
+//       },
+//     },
+//   });
+//   return c.json(allCharacters);
+// });
 
 characterRoute.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
@@ -170,15 +169,12 @@ characterRoute.put("/:id", async (c) => {
 
 const route = createRoute({
   method: "get",
-  path: "/{id}",
-  request: {
-    params: ParamsSchema,
-  },
+  path: "/",
   responses: {
     200: {
       content: {
         "application/json": {
-          schema: UserSchema,
+          schema: CharactersSchema,
         },
       },
       description: "Retrieve the user",
@@ -186,11 +182,37 @@ const route = createRoute({
   },
 });
 
-characterRoute.openapi(route, (c) => {
-  const { id } = c.req.valid("param");
-  return c.json({
-    id,
-    age: 20,
-    name: "Ultra-man",
-  });
-});
+characterRoute.openapi(
+  createRoute({
+    method: "get",
+    path: "/",
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: CharactersSchema,
+          },
+        },
+        description: "Retrieve the user",
+      },
+    },
+  }),
+  async (c) => {
+    const allCharacters = await prisma.character.findMany({
+      include: {
+        wands: {
+          select: {
+            wood: true,
+            core: true,
+            length: true,
+          },
+        },
+      },
+      // include: {
+      //   wands: true,
+      // },
+    });
+
+    return c.json(allCharacters as any, 200);
+  },
+);

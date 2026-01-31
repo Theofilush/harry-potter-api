@@ -9,20 +9,20 @@ datasource db {
 }
 
 model Character {
-  id             String  @id @default(ulid())
-  name           String  @db.VarChar(150)
-  slug           String  @unique @db.VarChar(150)
-  alternateNames String  @db.VarChar(150)
-  species        String  @db.VarChar(50)
-  gender         String  @db.VarChar(20)
-  house          String  @db.VarChar(50)
-  ancestry       String? @db.VarChar(100)
-  eyeColour      String? @db.VarChar(30)
-  hairColour     String  @db.VarChar(30)
-  patronus       String? @db.VarChar(100)
+  id             String    @id @default(ulid())
+  name           String    @db.VarChar(150)
+  slug           String    @unique @db.VarChar(150)
+  alternateNames String    @db.VarChar(150)
+  species        String    @db.VarChar(50)
+  gender         String    @db.VarChar(20)
+  house          String    @db.VarChar(50)
+  ancestry       String?   @db.VarChar(100)
+  eyeColour      String?   @db.VarChar(30)
+  hairColour     String    @db.VarChar(30)
+  patronus       String?   @db.VarChar(100)
+  birthDate      DateTime?
+  birthYear      Int?      @db.Integer
 
-  birthDate         DateTime?
-  birthYear         Int?      @db.Integer
   isAlive           Boolean?
   isWizard          Boolean?
   isHogwartsStudent Boolean?
