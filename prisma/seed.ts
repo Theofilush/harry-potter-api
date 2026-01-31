@@ -1,80 +1,51 @@
+import { cuid } from "zod";
 import { prisma } from "../src/lib/prisma";
 import { dataCharacters } from "../src/modules/characters/data";
 
 async function main() {
   for (const character of dataCharacters) {
-    const upsertCharacter = await prisma.character.upsert({
-      where: {
-        slug: character.slug,
-      },
+    await prisma.character.upsert({
+      where: { slug: character.slug },
       update: {
-        name: character.name,
-        slug: character.slug,
-        alternateNames: character.alternateNames || "",
-        species: character.species,
-        gender: character.gender,
-        house: character.house || "",
-        birthDate: character.birthDate,
-        birthYear: character.birthYear || 0,
-        wizard: character.wizard,
-        ancestry: character.ancestry || "",
-        eyeColour: character.eyeColour || "",
-        hairColour: character.hairColour || "",
-        patronus: character.patronus || "",
-        hogwartsStudent: character.hogwartsStudent,
-        hogwartsStaff: character.hogwartsStaff,
-        actor: character.actor,
-        alternateActors: character.alternateActors,
-        alive: character.alive,
-        imageUrl: character.imageUrl,
-      },
-      create: {
-        name: character.name,
-        slug: character.slug,
-        alternateNames: character.alternateNames || "",
-        species: character.species,
-        gender: character.gender,
-        house: character.house || "",
-        birthDate: character.birthDate,
-        birthYear: character.birthYear || 0,
-        wizard: character.wizard,
-        ancestry: character.ancestry || "",
-        eyeColour: character.eyeColour || "",
-        hairColour: character.hairColour || "",
+        ...character,
         wands: character.wands
           ? {
-              create: character.wands.map((wand) => ({
-                wood: wand.wood ?? "",
-                core: wand.core ?? "",
-                length: Number(wand.length) || 0,
+              upsert: character.wands.map((wand) => ({
+                where: { slug: wand.slug },
+                update: {
+                  name: wand.name ?? "Unknown Wand",
+                  slug: wand.slug ?? `wand-${cuid()}`,
+                  wood: wand.wood ?? "",
+                  core: wand.core ?? "",
+                  length: wand.length ?? 0,
+                },
+                create: {
+                  name: wand.name ?? "Unknown Wand",
+                  slug: wand.slug ?? `wand-${cuid()}`,
+                  wood: wand.wood ?? "",
+                  core: wand.core ?? "",
+                  length: wand.length ?? 0,
+                },
               })),
             }
           : undefined,
-        patronus: character.patronus || "",
-        hogwartsStudent: character.hogwartsStudent,
-        hogwartsStaff: character.hogwartsStaff,
-        actor: character.actor,
-        alternateActors: character.alternateActors,
-        alive: character.alive,
-        imageUrl: character.imageUrl,
+      },
+      create: {
+        ...character,
+        wands: character.wands
+          ? {
+              create: character.wands.map((wand) => ({
+                name: wand.name ?? "Unknown Wand",
+                slug: wand.slug ?? `wand-${cuid()}`,
+                wood: wand.wood ?? "",
+                core: wand.core ?? "",
+                length: wand.length ?? 0,
+              })),
+            }
+          : undefined,
       },
       include: { wands: true },
     });
-
-    if (character.wands) {
-      await prisma.wand.deleteMany({
-        where: { characterId: upsertCharacter.id },
-      });
-
-      await prisma.wand.createMany({
-        data: character.wands.map((wand) => ({
-          wood: wand.wood ?? "",
-          core: wand.core ?? "",
-          length: Number(wand.length) || 0,
-          characterId: upsertCharacter.id,
-        })),
-      });
-    }
 
     console.log(`🧙 ${character.name}`);
   }

@@ -9,38 +9,48 @@ datasource db {
 }
 
 model Character {
-  id              String    @id @default(cuid())
-  name            String
-  slug            String    @unique @db.VarChar(300)
-  alternateNames  String    @db.VarChar(300)
-  species         String    @db.VarChar(300)
-  gender          String    @db.VarChar(300)
-  house           String    @db.VarChar(300)
-  birthDate       DateTime?
-  birthYear       Int       @db.Integer
-  wizard          Boolean
-  ancestry        String    @db.VarChar(300)
-  eyeColour       String    @db.VarChar(300)
-  hairColour      String    @db.VarChar(300)
-  patronus        String    @db.VarChar(300)
-  hogwartsStudent Boolean
-  hogwartsStaff   Boolean
-  actor           String    @db.VarChar(300)
-  alternateActors String?   @db.VarChar(300)
-  alive           Boolean
-  imageUrl        String    @db.VarChar(300)
+  id             String  @id @default(ulid())
+  name           String  @db.VarChar(150)
+  slug           String  @unique @db.VarChar(150)
+  alternateNames String  @db.VarChar(150)
+  species        String  @db.VarChar(50)
+  gender         String  @db.VarChar(20)
+  house          String  @db.VarChar(50)
+  ancestry       String? @db.VarChar(100)
+  eyeColour      String? @db.VarChar(30)
+  hairColour     String  @db.VarChar(30)
+  patronus       String? @db.VarChar(100)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @default(now()) @updatedAt
+  birthDate         DateTime?
+  birthYear         Int?      @db.Integer
+  isAlive           Boolean?
+  isWizard          Boolean?
+  isHogwartsStudent Boolean?
+  isHogwartsStaff   Boolean?
+
+  actor           String  @db.VarChar(150)
+  alternateActors String? @db.VarChar(150)
+  imageUrl        String? @db.VarChar(255)
 
   wands Wand[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Wand {
-  id          String    @id @default(cuid())
-  wood        String?   @db.VarChar(300)
-  core        String?   @db.VarChar(300)
-  length      Float?
-  character   Character @relation(fields: [characterId], references: [id])
+  id String @id @default(ulid())
+
+  name String? @default("Unknown Wand") @db.VarChar(150)
+
+  slug   String? @unique @default(cuid()) @db.VarChar(150)
+  wood   String? @db.VarChar(50)
+  core   String? @db.VarChar(50)
+  length Float?
+
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   characterId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
