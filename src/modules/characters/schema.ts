@@ -2,14 +2,14 @@
 import { z } from "@hono/zod-openapi";
 
 export const WandSchema = z.object({
-  id: z.string().min(1).openapi({ example: "01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
+  id: z.string().min(1).optional().openapi({ example: "01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
   name: z.string().min(1).nullable().openapi({ example: "Harry Potter Holly" }),
   slug: z.string().min(1).nullable().openapi({ example: "harry-potter-holly" }),
   wood: z.string().min(1).nullable().openapi({ example: "holly" }),
   core: z.string().min(1).nullable().openapi({ example: "phoenix feather" }),
   length: z.number().nonnegative().nullable().openapi({ example: 11 }),
-  createdAt: z.date().openapi({ example: "2026-01-18T14:43:15.388Z" }),
-  updatedAt: z.date().openapi({ example: "2026-01-18T15:09:08.238Z" }),
+  createdAt: z.date().optional().openapi({ example: "2026-01-18T14:43:15.388Z" }),
+  updatedAt: z.date().optional().openapi({ example: "2026-01-18T15:09:08.238Z" }),
 });
 
 export const CharacterSchema = z.object({

@@ -7,166 +7,6 @@ let characters = dataCharacters;
 
 export const characterRoute = new OpenAPIHono();
 
-// characterRoute.get("/", async (c) => {
-//   const allCharacters = await prisma.character.findMany({
-//     include: {
-//       wands: {
-//         select: {
-//           wood: true,
-//           core: true,
-//           length: true,
-//         },
-//       },
-//     },
-//   });
-//   return c.json(allCharacters);
-// });
-
-// characterRoute.get("/:slug", async (c) => {
-//   const slug = c.req.param("slug");
-
-//   const character = await prisma.character.findUnique({
-//     where: {
-//       slug: slug,
-//     },
-//     include: {
-//       wands: {
-//         select: {
-//           wood: true,
-//           core: true,
-//           length: true,
-//         },
-//       },
-//     },
-//   });
-
-//   if (!character) {
-//     return c.notFound();
-//   }
-
-//   return c.json(character);
-// });
-
-// characterRoute.delete("/:id", async (c) => {
-//   const id = c.req.param("id");
-
-//   await prisma.wand.deleteMany({
-//     where: { characterId: id },
-//   });
-
-//   await prisma.character.delete({
-//     where: {
-//       id: id,
-//     },
-//   });
-
-//   return c.json({
-//     message: `Character ${id} deleted`,
-//   });
-// });
-
-// characterRoute.post("/", async (c) => {
-//   const body = await c.req.json();
-
-//   const newCharacter = {
-//     ...body,
-//     birthDate: body.birthDate ? new Date(body.birthDate) : undefined,
-//   };
-
-//   const upsertCharacter = await prisma.character.upsert({
-//     where: {
-//       slug: newCharacter.slug,
-//     },
-//     update: {
-//       name: newCharacter.name,
-//       slug: newCharacter.slug,
-//       alternateNames: newCharacter.alternateNames,
-//       species: newCharacter.species,
-//       gender: newCharacter.gender,
-//       house: newCharacter.house,
-//       birthDate: newCharacter.birthDate,
-//       birthYear: newCharacter.birthYear,
-//       wizard: newCharacter.wizard,
-//       ancestry: newCharacter.ancestry,
-//       eyeColour: newCharacter.eyeColour,
-//       hairColour: newCharacter.hairColour,
-//       patronus: newCharacter.patronus,
-//       hogwartsStudent: newCharacter.hogwartsStudent,
-//       hogwartsStaff: newCharacter.hogwartsStaff,
-//       actor: newCharacter.actor,
-//       alternateActors: newCharacter.alternateActors,
-//       alive: newCharacter.alive,
-//       imageUrl: newCharacter.Url,
-//     },
-//     create: {
-//       ...newCharacter,
-//       wands: newCharacter.wands
-//         ? {
-//             create: newCharacter.wands.map((wand: any) => ({
-//               wood: wand.wood,
-//               core: wand.core,
-//               length: wand.length,
-//             })),
-//           }
-//         : undefined,
-//     },
-//   });
-
-//   // Create or Update Wands
-//   if (newCharacter.wands) {
-//     await prisma.wand.deleteMany({
-//       where: { characterId: upsertCharacter.id },
-//     });
-
-//     await prisma.wand.createMany({
-//       data: newCharacter.wands.map((wand: any) => ({
-//         wood: wand.wood,
-//         core: wand.core,
-//         length: wand.length,
-//         characterId: upsertCharacter.id,
-//       })),
-//     });
-//   }
-
-//   return c.json(upsertCharacter, 201);
-// });
-
-// characterRoute.put("/:id", async (c) => {
-//   const id = c.req.param("id");
-//   const body = await c.req.json();
-//   const { wands, ...newCharacter } = body;
-
-//   const character = await prisma.character.findUnique({
-//     where: {
-//       id: id,
-//     },
-//   });
-
-//   if (!character) {
-//     return c.notFound();
-//   }
-
-//   const updatedCharacter = await prisma.character.update({
-//     where: { id: id },
-//     data: {
-//       ...newCharacter,
-//       wands: wands
-//         ? {
-//             deleteMany: {}, // remove all wands relate character ID
-//             create: wands.map((wand: any) => ({
-//               wood: wand.wood ?? "",
-//               core: wand.core ?? "",
-//               length: Number(wand.length) || 0,
-//             })),
-//           }
-//         : undefined,
-//     },
-//     include: { wands: true },
-//   });
-
-//   return c.json(updatedCharacter);
-// });
-
 // GET /character
 characterRoute.openapi(
   createRoute({
@@ -302,9 +142,60 @@ characterRoute.openapi(
         return c.json({ error: "Invalid request body" }, 400);
       }
 
-      const newCharacter = await prisma.character.create({ data: body });
+      const newCharacter = await prisma.character.create({
+        data: {
+          name: body.name,
+          slug: body.slug,
+          alternateNames: body.alternateNames,
+          species: body.species,
+          gender: body.gender,
+          house: body.house,
+          birthDate: body.birthDate ? new Date(body.birthDate) : null,
+          birthYear: body.birthYear,
+          isWizard: body.isWizard,
+          ancestry: body.ancestry,
+          eyeColour: body.eyeColour,
+          hairColour: body.hairColour,
+          patronus: body.patronus,
+          isHogwartsStudent: body.isHogwartsStudent,
+          isHogwartsStaff: body.isHogwartsStaff,
+          actor: body.actor,
+          alternateActors: body.alternateActors,
+          isAlive: body.isAlive,
+          imageUrl: body.imageUrl,
+        },
+        include: {
+          wands: true,
+        },
+      });
+      if (body.wands && Array.isArray(body.wands)) {
+        for (const wand of body.wands) {
+          await prisma.wand.upsert({
+            where: { slug: wand.slug },
+            update: {
+              name: wand.name,
+              wood: wand.wood,
+              core: wand.core,
+              length: wand.length,
+              characterId: newCharacter.id,
+            },
+            create: {
+              name: wand.name,
+              slug: wand.slug,
+              wood: wand.wood,
+              core: wand.core,
+              length: wand.length,
+              characterId: newCharacter.id,
+            },
+          });
+        }
+      }
+      const characterWithWands = await prisma.character.findUnique({
+        where: { id: newCharacter.id },
+        include: { wands: true },
+      });
 
-      return c.json(newCharacter as any, 201);
+      return c.json(characterWithWands as any, 201);
     } catch (err: any) {
       if (err.code === "P2002") {
         return c.json({ error: "Character already exists" }, 409);
@@ -314,7 +205,7 @@ characterRoute.openapi(
   },
 );
 
-// PUT /character
+// PUT /character/:id
 characterRoute.openapi(
   createRoute({
     method: "put",
@@ -344,11 +235,40 @@ characterRoute.openapi(
         return c.json({ error: "Invalid request body" }, 400);
       }
 
-      const updatedCharacter = await prisma.character.update({
-        where: { id },
-        data: body,
+      const { wands, ...characterData } = body;
+
+      const resultUpdatedCharacter = await prisma.$transaction(async (tx) => {
+        const updatedCharacter = await tx.character.update({
+          where: { id },
+          data: characterData,
+        });
+
+        await tx.wand.deleteMany({
+          where: { characterId: updatedCharacter.id },
+        });
+
+        if (wands && Array.isArray(wands)) {
+          for (const wand of wands) {
+            await tx.wand.create({
+              data: {
+                name: wand.name,
+                slug: wand.slug,
+                wood: wand.wood,
+                core: wand.core,
+                length: wand.length,
+                characterId: updatedCharacter.id,
+              },
+            });
+          }
+        }
+
+        return tx.character.findUnique({
+          where: { id: updatedCharacter.id },
+          include: { wands: true },
+        });
       });
-      return c.json(updatedCharacter as any, 200);
+
+      return c.json(resultUpdatedCharacter as any, 200);
     } catch (err: any) {
       if (err.code === "P2025") {
         return c.json({ error: "Character not found" }, 404);
@@ -356,7 +276,6 @@ characterRoute.openapi(
       if (err.code === "P2002") {
         return c.json({ error: "Character already exists" }, 409);
       }
-
       return c.json({ error: "Internal server error" }, 500);
     }
   },
@@ -366,7 +285,7 @@ characterRoute.openapi(
 characterRoute.openapi(
   createRoute({
     method: "patch",
-    path: "/:id",
+    path: "/{id}",
     request: {
       body: {
         content: { "application/json": { schema: CharacterUpdateSchema } },
@@ -391,18 +310,44 @@ characterRoute.openapi(
       if (!body || Object.keys(body).length === 0) {
         return c.json({ error: "Invalid request body" }, 400);
       }
+      const { wands, ...characterData } = body;
 
-      const updatedCharacter = await prisma.character.update({
-        where: { id },
-        data: body,
-        include: {
-          wands: {
-            select: { wood: true, core: true, length: true },
-          },
-        },
+      const resultUpdatedCharacter = await prisma.$transaction(async (tx) => {
+        const updatedCharacter = await tx.character.update({
+          where: { id },
+          data: characterData,
+        });
+
+        if (wands && Array.isArray(wands)) {
+          for (const wand of wands) {
+            await tx.wand.upsert({
+              where: { slug: wand.slug },
+              update: {
+                name: wand.name,
+                wood: wand.wood,
+                core: wand.core,
+                length: wand.length,
+                characterId: updatedCharacter.id,
+              },
+              create: {
+                name: wand.name,
+                slug: wand.slug,
+                wood: wand.wood,
+                core: wand.core,
+                length: wand.length,
+                characterId: updatedCharacter.id,
+              },
+            });
+          }
+        }
+
+        return tx.character.findUnique({
+          where: { id: updatedCharacter.id },
+          include: { wands: true },
+        });
       });
 
-      return c.json(updatedCharacter as any, 200);
+      return c.json(resultUpdatedCharacter as any, 200);
     } catch (err: any) {
       if (err.code === "P2025") {
         return c.json({ error: "Character not found" }, 404);
