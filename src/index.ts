@@ -30,7 +30,8 @@ app.doc("/openapi.json", {
   },
   servers: [
     {
-      url: "https://harry-potter-api-production-53c6.up.railway.app/",
+      url: "https://hp-api-theofilus.up.railway.app",
+      // url: "https://harry-potter-api-production-53c6.up.railway.app/",
       description: "Production server",
     },
     {
