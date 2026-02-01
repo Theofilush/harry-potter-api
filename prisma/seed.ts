@@ -7,12 +7,8 @@ async function main() {
     const { wands, ...characterData } = character;
     await prisma.character.upsert({
       where: { slug: character.slug },
-      update: {
-        ...characterData,
-      },
-      create: {
-        ...characterData,
-      },
+      update: { ...characterData },
+      create: { ...characterData },
       include: { wands: true },
     });
 

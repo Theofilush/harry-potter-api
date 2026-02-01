@@ -2,7 +2,7 @@
 import { z } from "@hono/zod-openapi";
 
 export const WandSchema = z.object({
-  id: z.string().min(1).openapi({ example: "- 01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
+  id: z.string().min(1).openapi({ example: "01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
   name: z.string().min(1).nullable().openapi({ example: "Harry Potter Holly" }),
   slug: z.string().min(1).nullable().openapi({ example: "harry-potter-holly" }),
   wood: z.string().min(1).nullable().openapi({ example: "holly" }),
@@ -13,11 +13,11 @@ export const WandSchema = z.object({
 });
 
 export const CharacterSchema = z.object({
-  id: z.string().min(1).openapi({ example: "- 01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
+  id: z.string().min(1).openapi({ example: "01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
   name: z.string().min(1).nullable().openapi({ example: "Harry Potter" }),
   slug: z.string().min(1).openapi({ example: "harry-potter" }),
   alternateNames: z.string().min(1).openapi({ example: "The Boy Who Lived" }),
-  // alternateNames: z.array(z.string()),
+  // TODO: alternateNames: z.array(z.string()),
   species: z.string().min(1).openapi({ example: "human" }),
   gender: z.string().min(1).openapi({ example: "male" }),
   house: z.string().min(1).openapi({ example: "Gryffindor" }),
@@ -47,30 +47,24 @@ export const CharacterSchema = z.object({
   updatedAt: z.date().openapi({ example: "2026-01-18T15:09:08.238Z" }),
 });
 
-export const ParamsSchema = z.object({
-  id: z
-    .string()
-    .min(3)
-    .openapi({
-      param: {
-        name: "id",
-        in: "path",
-      },
-      example: "1212121",
-    }),
+export const CharacterCreateSchema = z.object({
+  name: z.string().min(1).max(100),
+  slug: z.string().min(1).max(100),
+  house: z.string().nullable().optional(),
+  patronus: z.string().nullable().optional(),
+  wands: z.array(WandSchema).optional(),
 });
 
-export const UserSchema = z.object({
-  id: z.string().openapi({
-    example: "123",
-  }),
-  name: z.string().openapi({
-    example: "John Doe",
-  }),
-  age: z.number().openapi({
-    example: 42,
-  }),
+export const CharacterUpdateSchema = z.object({
+  name: z.string().min(1).max(100).optional(),
+  slug: z.string().min(1).max(100).optional(),
+  house: z.string().nullable().optional(),
+  patronus: z.string().nullable().optional(),
+  wands: z.array(WandSchema).optional(),
 });
+
+export const ErrorSchema = z.object({ error: z.string() });
+export const SuccessSchema = z.object({ message: z.string() });
 
 export const CharactersSchema = z.array(CharacterSchema);
 
