@@ -1,4 +1,3 @@
-import { cuid } from "zod";
 import { prisma } from "../src/lib/prisma";
 import { dataCharacters } from "../src/modules/characters/data";
 import { hogwartsHouses } from "../src/modules/houses/data";
@@ -17,8 +16,14 @@ async function main() {
     const { wands, ...characterData } = character;
     await prisma.character.upsert({
       where: { slug: character.slug },
-      update: { ...characterData },
-      create: { ...characterData },
+      update: {
+        ...characterData,
+        hogwartsHouseSlug: characterData.hogwartsHouseSlug,
+      },
+      create: {
+        ...characterData,
+        hogwartsHouseSlug: characterData.hogwartsHouseSlug,
+      },
       include: { wands: true },
     });
 

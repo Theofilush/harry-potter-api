@@ -27,7 +27,7 @@ export const CharacterSchema = z.object({
   alternateNames: z.string().min(1).openapi({ example: "The Boy Who Lived" }),
   species: z.string().min(1).openapi({ example: "human" }),
   gender: z.string().min(1).openapi({ example: "male" }),
-  house: z.string().min(1).openapi({ example: "Gryffindor" }),
+  hogwartsHouseSlug: z.string().min(1).openapi({ example: "gryffindor" }),
   birthDate: z.date().nullable().openapi({ example: "1980-07-31T00:00:00.000Z" }),
   birthYear: z.number().nullable().openapi({ example: 1980 }),
   ancestry: z.string().min(1).nullable().openapi({ example: "half-blood" }),
@@ -43,7 +43,6 @@ export const CharacterSchema = z.object({
   isAlive: z.boolean().nullable().openapi({ example: true }),
   // TODO: alternateActors: z.array(z.string()),
   // TODO: alternateNames: z.array(z.string()),
-
   wands: z
     .array(WandSchema)
     .nullable()
