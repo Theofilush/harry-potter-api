@@ -34,7 +34,7 @@ model Character {
   wands Wand[]
 
   hogwartsHouseSlug String?
-  hogwartsHouse     HogwartsHouse? @relation(fields: [hogwartsHouseSlug], references: [slug])
+  hogwartsHouse     HogwartsHouse? @relation(fields: [hogwartsHouseSlug], references: [slug], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
