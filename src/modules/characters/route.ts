@@ -4,6 +4,7 @@ import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
 import { CharactersSchema, CharacterSchema, CharacterUpdateSchema, CharacterCreateSchema, ErrorSchema, SuccessSchema, CharacterIdParamSchema, CharacterSlugParamSchema } from "./schema";
 
 let characters = dataCharacters;
+const tags = ["/characters"];
 
 export const characterRoute = new OpenAPIHono();
 
@@ -12,6 +13,7 @@ characterRoute.openapi(
   createRoute({
     method: "get",
     path: "/",
+    tags,
     responses: {
       200: { description: "Retrieve all characters", content: { "application/json": { schema: CharactersSchema } } },
       400: { description: "Invalid request parameters", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid request parameters" } } } },
@@ -49,6 +51,7 @@ characterRoute.openapi(
   createRoute({
     method: "get",
     path: "/{slug}",
+    tags,
     request: {
       params: CharacterSlugParamSchema,
     },
@@ -129,6 +132,7 @@ characterRoute.openapi(
   createRoute({
     method: "delete",
     path: "/{id}",
+    tags,
     request: {
       params: CharacterIdParamSchema,
     },
@@ -164,6 +168,7 @@ characterRoute.openapi(
   createRoute({
     method: "post",
     path: "/",
+    tags,
     request: {
       body: {
         content: {
@@ -326,6 +331,7 @@ characterRoute.openapi(
   createRoute({
     method: "put",
     path: "/{id}",
+    tags,
     request: {
       params: CharacterIdParamSchema,
       body: {
@@ -478,6 +484,7 @@ characterRoute.openapi(
   createRoute({
     method: "patch",
     path: "/{id}",
+    tags,
     request: {
       params: CharacterIdParamSchema,
       body: {
