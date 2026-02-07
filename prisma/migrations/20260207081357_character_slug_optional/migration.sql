@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Wand" ALTER COLUMN "slug" DROP NOT NULL;

@@ -16,9 +16,9 @@ async function main() {
   }
 
   for (const character of dataCharacters) {
-    for (const wand of character.wands) {
+    for (const wand of character.wands ?? []) {
       await prisma.wand.upsert({
-        where: { slug: wand.slug },
+        where: { slug: wand.slug ?? undefined },
         update: {
           name: wand.name,
           slug: wand.slug,

@@ -10,7 +10,7 @@ datasource db {
 
 model Character {
   id             String    @id @default(ulid())
-  name           String    @db.VarChar(150)
+  name           String?   @db.VarChar(150)
   slug           String    @unique @db.VarChar(150)
   alternateNames String    @db.VarChar(150)
   species        String    @db.VarChar(50)
