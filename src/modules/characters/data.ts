@@ -252,7 +252,7 @@ export const exampleRequestCreateCharacter = {
   isHogwartsStudent: true,
   isHogwartsStaff: false,
   actor: "Daniel Radcliffe",
-  alternateActors: [],
+  alternateActors: "",
   isAlive: true,
   imageUrl: "https://example.com/images/harry.jpg",
   wands: [
@@ -284,13 +284,13 @@ export const exampleResponseCreateCharacter = {
   isHogwartsStudent: true,
   isHogwartsStaff: false,
   actor: "Daniel Radcliffe",
-  alternateActors: [],
+  alternateActors: "",
   isAlive: true,
   imageUrl: "https://example.com/images/harry.jpg",
   wands: [
     {
       id: "wand123",
-      name: "Harry's Wand",
+      name: "Harry Wand",
       slug: "harrys-wand",
       wood: "Holly",
       core: "Phoenix feather",
