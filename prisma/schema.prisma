@@ -34,6 +34,9 @@ model Character {
 
   wands Wand[]
 
+  hogwartsHouseId String?
+  hogwartsHouse   HogwartsHouse? @relation(fields: [hogwartsHouseId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
@@ -50,6 +53,20 @@ model Wand {
 
   character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   characterId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model HogwartsHouse {
+  id      String @id @default(ulid())
+  slug    String @unique @db.VarChar(50)
+  name    String @unique @db.VarChar(50)
+  emoji   String @db.VarChar(10)
+  founder String @db.VarChar(100)
+  animal  String @db.VarChar(50)
+
+  characters Character[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

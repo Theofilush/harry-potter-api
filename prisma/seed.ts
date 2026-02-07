@@ -1,8 +1,18 @@
 import { cuid } from "zod";
 import { prisma } from "../src/lib/prisma";
 import { dataCharacters } from "../src/modules/characters/data";
+import { hogwartsHouses } from "../src/modules/houses/data";
 
 async function main() {
+  for (const house of hogwartsHouses) {
+    await prisma.hogwartsHouse.upsert({
+      where: { slug: house.slug },
+      update: house,
+      create: house,
+    });
+    console.log(`🏫 ${house.name}`);
+  }
+
   for (const character of dataCharacters) {
     const { wands, ...characterData } = character;
     await prisma.character.upsert({
@@ -13,9 +23,7 @@ async function main() {
     });
 
     console.log(`🧙 ${character.name}`);
-  }
 
-  for (const character of dataCharacters) {
     for (const wand of character.wands ?? []) {
       await prisma.wand.upsert({
         where: { slug: wand.slug ?? undefined },
