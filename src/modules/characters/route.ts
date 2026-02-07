@@ -1,7 +1,7 @@
 import { dataCharacters } from "./data";
 import { prisma } from "../../lib/prisma";
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import { CharactersSchema, CharacterSchema, CharacterUpdateSchema, CharacterCreateSchema, ErrorSchema, SuccessSchema } from "./schema";
+import { CharactersSchema, CharacterSchema, CharacterUpdateSchema, CharacterCreateSchema, ErrorSchema, SuccessSchema, CharacterIdParamSchema, CharacterSlugParamSchema } from "./schema";
 
 let characters = dataCharacters;
 
@@ -49,8 +49,47 @@ characterRoute.openapi(
   createRoute({
     method: "get",
     path: "/{slug}",
+    request: {
+      params: CharacterSlugParamSchema,
+    },
     responses: {
-      200: { description: "Retrieve a character by slug", content: { "application/json": { schema: CharacterSchema } } },
+      200: {
+        description: "Retrieve a character by slug",
+        content: {
+          "application/json": {
+            schema: CharacterSchema,
+            example: {
+              id: "clabcdef1234567890ghijklmn",
+              name: "Harry Potter",
+              slug: "harry-potter",
+              alternateNames: "The Boy Who Lived",
+              species: "Human",
+              gender: "Male",
+              house: "Gryffindor",
+              birthDate: "1980-07-31T00:00:00.000Z",
+              birthYear: 1980,
+              isWizard: true,
+              ancestry: "Half-blood",
+              eyeColour: "Green",
+              hairColour: "Black",
+              patronus: "Stag",
+              isHogwartsStudent: true,
+              isHogwartsStaff: false,
+              actor: "Daniel Radcliffe",
+              alternateActors: "",
+              isAlive: true,
+              imageUrl: "https://example.com/images/harry.jpg",
+              wands: [
+                {
+                  wood: "Holly",
+                  core: "Phoenix feather",
+                  length: 11,
+                },
+              ],
+            },
+          },
+        },
+      },
       400: { description: "Invalid slug parameter", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid slug parameter" } } } },
       404: { description: "Character not found", content: { "application/json": { schema: ErrorSchema, example: { error: "Character not found" } } } },
       500: { description: "Internal server error", content: { "application/json": { schema: ErrorSchema, example: { error: "Internal server error" } } } },
@@ -90,6 +129,9 @@ characterRoute.openapi(
   createRoute({
     method: "delete",
     path: "/{id}",
+    request: {
+      params: CharacterIdParamSchema,
+    },
     responses: {
       200: { description: "Character deleted successfully", content: { "application/json": { schema: SuccessSchema, example: { message: "Character deleted successfully" } } } },
       400: { description: "Invalid ID parameter", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid ID parameter" } } } },
@@ -124,11 +166,85 @@ characterRoute.openapi(
     path: "/",
     request: {
       body: {
-        content: { "application/json": { schema: CharacterCreateSchema } },
+        content: {
+          "application/json": {
+            schema: CharacterCreateSchema,
+            example: {
+              name: "Harry Potter",
+              slug: "harry-potter",
+              alternateNames: "The Boy Who Lived",
+              species: "Human",
+              gender: "Male",
+              house: "Gryffindor",
+              birthDate: "1980-07-31",
+              birthYear: 1980,
+              isWizard: true,
+              ancestry: "Half-blood",
+              eyeColour: "Green",
+              hairColour: "Black",
+              patronus: "Stag",
+              isHogwartsStudent: true,
+              isHogwartsStaff: false,
+              actor: "Daniel Radcliffe",
+              alternateActors: [],
+              isAlive: true,
+              imageUrl: "https://example.com/images/harry.jpg",
+              wands: [
+                {
+                  name: "Harry Wand",
+                  slug: "harrys-wand",
+                  wood: "Holly",
+                  core: "Phoenix feather",
+                  length: 11,
+                },
+              ],
+            },
+          },
+        },
       },
     },
     responses: {
-      201: { description: "Character created successfully", content: { "application/json": { schema: CharacterSchema } } },
+      201: {
+        description: "Character created successfully",
+        content: {
+          "application/json": {
+            schema: CharacterSchema,
+            example: {
+              id: "clqwerty123456",
+              name: "Harry Potter",
+              slug: "harry-potter",
+              alternateNames: "The Boy Who Lived",
+              species: "Human",
+              gender: "Male",
+              house: "Gryffindor",
+              birthDate: "1980-07-31T00:00:00.000Z",
+              birthYear: 1980,
+              isWizard: true,
+              ancestry: "Half-blood",
+              eyeColour: "Green",
+              hairColour: "Black",
+              patronus: "Stag",
+              isHogwartsStudent: true,
+              isHogwartsStaff: false,
+              actor: "Daniel Radcliffe",
+              alternateActors: [],
+              isAlive: true,
+              imageUrl: "https://example.com/images/harry.jpg",
+              wands: [
+                {
+                  id: "wand123",
+                  name: "Harry's Wand",
+                  slug: "harrys-wand",
+                  wood: "Holly",
+                  core: "Phoenix feather",
+                  length: 11,
+                  characterId: "clqwerty123456",
+                },
+              ],
+            },
+          },
+        },
+      },
       400: { description: "Invalid request body", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid request body" } } } },
       409: { description: "Character already exists", content: { "application/json": { schema: ErrorSchema, example: { error: "Character already exists" } } } },
       500: { description: "Internal server error", content: { "application/json": { schema: ErrorSchema, example: { error: "Internal server error" } } } },
@@ -209,14 +325,90 @@ characterRoute.openapi(
 characterRoute.openapi(
   createRoute({
     method: "put",
-    path: "/:id",
+    path: "/{id}",
     request: {
+      params: CharacterIdParamSchema,
       body: {
-        content: { "application/json": { schema: CharacterUpdateSchema } },
+        content: {
+          "application/json": {
+            schema: CharacterUpdateSchema,
+            example: {
+              name: "Hermione Granger",
+              slug: "hermione-granger",
+              alternateNames: "Hermione Jean Granger",
+              species: "Human",
+              gender: "Female",
+              house: "Gryffindor",
+              birthDate: "1979-09-19",
+              birthYear: 1979,
+              isWizard: true,
+              ancestry: "Muggle-born",
+              eyeColour: "Brown",
+              hairColour: "Brown",
+              patronus: "Otter",
+              isHogwartsStudent: true,
+              isHogwartsStaff: false,
+              actor: "Emma Watson",
+              alternateActors: "",
+              isAlive: true,
+              imageUrl: "https://example.com/images/hermione.jpg",
+              wands: [
+                {
+                  name: "Hermione Wand",
+                  slug: "hermiones-wand",
+                  wood: "Vine",
+                  core: "Dragon heartstring",
+                  length: 10.75,
+                },
+              ],
+            },
+          },
+        },
       },
     },
+
     responses: {
-      200: { description: "Character updated successfully", content: { "application/json": { schema: CharacterSchema } } },
+      200: {
+        description: "Character updated successfully",
+        content: {
+          "application/json": {
+            schema: CharacterSchema,
+            example: {
+              id: "clabcdef123456",
+              name: "Hermione Granger",
+              slug: "hermione-granger",
+              alternateNames: "Hermione Jean Granger",
+              species: "Human",
+              gender: "Female",
+              house: "Gryffindor",
+              birthDate: "1979-09-19T00:00:00.000Z",
+              birthYear: 1979,
+              isWizard: true,
+              ancestry: "Muggle-born",
+              eyeColour: "Brown",
+              hairColour: "Brown",
+              patronus: "Otter",
+              isHogwartsStudent: true,
+              isHogwartsStaff: false,
+              actor: "Emma Watson",
+              alternateActors: "",
+              isAlive: true,
+              imageUrl: "https://example.com/images/hermione.jpg",
+              wands: [
+                {
+                  id: "wand456",
+                  name: "Hermione Wand",
+                  slug: "hermiones-wand",
+                  wood: "Vine",
+                  core: "Dragon heartstring",
+                  length: 10.75,
+                  characterId: "clabcdef123456",
+                },
+              ],
+            },
+          },
+        },
+      },
       400: { description: "Invalid request body or ID parameter", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid request body" } } } },
       404: { description: "Character not found", content: { "application/json": { schema: ErrorSchema, example: { error: "Character not found" } } } },
       409: { description: "Character already exists", content: { "application/json": { schema: ErrorSchema, example: { error: "Character already exists" } } } },
@@ -287,12 +479,53 @@ characterRoute.openapi(
     method: "patch",
     path: "/{id}",
     request: {
+      params: CharacterIdParamSchema,
       body: {
-        content: { "application/json": { schema: CharacterUpdateSchema } },
+        content: {
+          "application/json": {
+            schema: CharacterUpdateSchema,
+            example: {
+              house: "Gryffindor",
+              eyeColour: "Brown",
+              hairColour: "Brown",
+              wands: [
+                {
+                  name: "Hermione Wand",
+                  slug: "hermiones-wand",
+                  wood: "Vine",
+                  core: "Dragon heartstring",
+                  length: 10.75,
+                },
+              ],
+            },
+          },
+        },
       },
     },
     responses: {
-      200: { description: "Character partially updated successfully", content: { "application/json": { schema: CharacterSchema } } },
+      200: {
+        description: "Character partially updated successfully",
+        content: { "application/json": { schema: CharacterSchema } },
+        example: {
+          id: "clabcdef1234567890ghijklmn",
+          name: "Hermione Granger",
+          slug: "hermione-granger",
+          house: "Gryffindor",
+          eyeColour: "Brown",
+          hairColour: "Brown",
+          wands: [
+            {
+              id: "wand456",
+              name: "Hermione Wand",
+              slug: "hermiones-wand",
+              wood: "Vine",
+              core: "Dragon heartstring",
+              length: 10.75,
+              characterId: "clabcdef1234567890ghijklmn",
+            },
+          ],
+        },
+      },
       400: { description: "Invalid request body or ID parameter", content: { "application/json": { schema: ErrorSchema, example: { error: "Invalid request body" } } } },
       404: { description: "Character not found", content: { "application/json": { schema: ErrorSchema, example: { error: "Character not found" } } } },
       409: { description: "Character already exists", content: { "application/json": { schema: ErrorSchema, example: { error: "Character already exists" } } } },

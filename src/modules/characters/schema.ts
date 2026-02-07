@@ -13,11 +13,18 @@ export const WandSchema = z.object({
 });
 
 export const CharacterSchema = z.object({
-  id: z.string().min(1).openapi({ example: "01ARZ3NDEKTSV4RRFFQ69G5FAV" }),
+  id: z
+    .string()
+    .min(26)
+    .max(26)
+    .openapi({
+      param: { name: "id", in: "path" },
+      description: "Unique ULID of the character",
+      example: "clabcdef1234567890ghijklmn",
+    }),
   name: z.string().min(1).nullable().openapi({ example: "Harry Potter" }),
   slug: z.string().min(1).openapi({ example: "harry-potter" }),
   alternateNames: z.string().min(1).openapi({ example: "The Boy Who Lived" }),
-  // TODO: alternateNames: z.array(z.string()),
   species: z.string().min(1).openapi({ example: "human" }),
   gender: z.string().min(1).openapi({ example: "male" }),
   house: z.string().min(1).openapi({ example: "Gryffindor" }),
@@ -30,11 +37,12 @@ export const CharacterSchema = z.object({
   actor: z.string().min(1).openapi({ example: "Daniel Radcliffe" }),
   alternateActors: z.string().min(1).nullable().openapi({ example: "" }),
   imageUrl: z.string().min(1).nullable().openapi({ example: "https://ik.imagekit.io/hpapi/harry.jpg" }),
-  // TODO: alternateActors: z.array(z.string()),
   isWizard: z.boolean().nullable().openapi({ example: true }),
   isHogwartsStudent: z.boolean().nullable().openapi({ example: true }),
   isHogwartsStaff: z.boolean().nullable().openapi({ example: true }),
   isAlive: z.boolean().nullable().openapi({ example: true }),
+  // TODO: alternateActors: z.array(z.string()),
+  // TODO: alternateNames: z.array(z.string()),
 
   wands: z
     .array(WandSchema)
@@ -54,13 +62,34 @@ export const CharacterCreateSchema = z.object({
   patronus: z.string().nullable().optional(),
   wands: z.array(WandSchema).optional(),
 });
-
 export const CharacterUpdateSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   slug: z.string().min(1).max(100).optional(),
   house: z.string().nullable().optional(),
   patronus: z.string().nullable().optional(),
   wands: z.array(WandSchema).optional(),
+});
+
+export const CharacterIdParamSchema = z.object({
+  id: z
+    .string()
+    .min(26)
+    .max(26)
+    .openapi({
+      param: { name: "id", in: "path" },
+      description: "Unique ULID of the character",
+      example: "clabcdef1234567890ghijklmn",
+    }),
+});
+export const CharacterSlugParamSchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .openapi({
+      param: { name: "slug", in: "path" },
+      description: "Unique slug identifier of the character",
+      example: "harry-potter",
+    }),
 });
 
 export const ErrorSchema = z.object({ error: z.string() });
