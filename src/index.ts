@@ -9,7 +9,7 @@ import { swaggerUI } from "@hono/swagger-ui";
 const app = new OpenAPIHono();
 
 app.use(logger());
-app.route("/commont-route", commonRoute);
+app.route("/common-route", commonRoute);
 app.route("/characters", characterRoute);
 
 app.doc("/openapi.json", {
